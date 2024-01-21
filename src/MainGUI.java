@@ -29,8 +29,10 @@ public class MainGUI {
         }
 
         while (true) {
-            trainer.selectRandomPair();
-            WordImagePair selectedPair = trainer.getSelectedPair();
+            if (persistedData == null) {
+                trainer.selectRandomPair();
+                WordImagePair selectedPair = trainer.getSelectedPair();
+            }
 
             String message = "Statistik: Gesamtversuche - " + trainer.getTotalGuesses() +
                     ", Richtig - " + trainer.getCorrectGuesses();
