@@ -11,12 +11,10 @@ import java.util.List;
 
 public class MainGUI {
 
-    private static final String PERSISTENCE_PATH = "/Users/niklaskisser/Desktop/GPT_Test/src/data.json";
+    private static final String PERSISTENCE_PATH = "/Users/niklaskisser/IdeaProjects/sew9-2324-worttrainer-NKisser/src/main/java/data.json";
 
 
     public static void main(String[] args) throws IOException {
-         int loaded = 0;
-
         List<WordImagePair> wordImagePairs = new ArrayList<>();
         wordImagePairs.add(new WordImagePair("Hund", "https://www.bmel.de/SharedDocs/Bilder/DE/_Tiere/Haus-Zootiere/tierschutz-hunde.jpg?__blob=portrait&v=3"));
         wordImagePairs.add(new WordImagePair("Katze", "https://media.4-paws.org/a/5/c/4/a5c4c9cdfd3a8ecb58e9b1a5bd496c9dfbc3cedc/VIER%20PFOTEN_2020-10-07_00132-2890x2000-1920x1329.jpg"));
@@ -30,15 +28,12 @@ public class MainGUI {
             trainer.setTotalGuesses(((Long) persistedData.get("rounds")).intValue());
             trainer.setCorrectGuesses(((Long) persistedData.get("score")).intValue());
             trainer.setSelectedPair(new WordImagePair((String) persistedData.get("word"), (String) persistedData.get("url")));
-
-            loaded = 1;
         }
 
         while (true) {
-            if (loaded == 0) {
+            if (trainer.getSelectedPair() == null) {
                 trainer.selectRandomPair();
             }
-            loaded = 0;
 
             WordImagePair selectedPair = trainer.getSelectedPair();
 
@@ -72,7 +67,7 @@ public class MainGUI {
                 new JSONService().save(PERSISTENCE_PATH, trainer.getTotalGuesses(), trainer.getCorrectGuesses(), trainer.getSelectedPair().getImageUrl(), trainer.getSelectedPair().getWord());
                 break;
             }
-
+            trainer.selectRandomPair();
         }
     }
 }
